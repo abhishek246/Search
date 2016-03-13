@@ -1,0 +1,11 @@
+*.pyc
+*.out
+.Python
+pip-selfcheck.json
+bin/
+local/
+include/
+lib/python2.7/
+migrations/
+.idea/
+src/python/search/service/management/
