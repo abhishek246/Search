@@ -47,6 +47,7 @@ class NewsPaper(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('News Paper', max_length=128, null=False, blank=False)
     name_slug = models.SlugField(max_length=255, blank=True)
+    abbrevation = models.CharField(max_lenth=255, blank=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
@@ -57,3 +58,26 @@ class NewsPaper(models.Model):
     def __unicode__(self):
         return self.name
 
+class AgentSubscription(models.Model):
+    id=models.AutoField(primary_key=True)
+    area = models.ForeignKey(DropPoint, verbose_name='DropPoint')
+    agent = models.ForeignKey(Agent, verbose_name='Agent')
+    news_paper = models.ForeignKey(NewsPaper, verbose_name='NewsPaper')
+
+    class Meta:
+        db_table = 'agent_subscription'
+        verbose_name = 'agent_subscription'
+        verbose_name_plural = 'agent_subscriptions'
+
+    def __unicode__(self):
+        return self.name
+
+WEEKDAYS = ((0, 'Monday'), (1, 'Tuesday'), (2,'Wednesday'), \
+            (3, 'Thursday'), (4, 'Friday'), (5, 'Saturday'), \
+            (6, 'Sunday'))
+
+class Price(models.Model):
+    id = models.AutoField(primary_key = True)
+    news_paper = models.ForeignKey(NewsPaper, verbose_name='NewsPapers')
+    price = models.CharField('Price', max_length=128, null=False, blank=False, unique=True)
+    day = models.CharField('Week Day', max_length=20, null=False, blank=False, default='Regular', choices=WEEKDAYS)
