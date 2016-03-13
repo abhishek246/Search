@@ -30,3 +30,30 @@ class DropPoint(models.Model):
     def __unicode__(self):
         return self.name
 
+class Agent(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField('Agent Name', max_length=128, null=False, blank=False)
+    area = models.ForeignKey(DropPoint, verbose_name='DropPoint')
+
+    class Meta:
+        db_table = 'agent'
+        verbose_name = 'Agent'
+        verbose_name_plural = 'Agents'
+
+    def __unicode__(self):
+        return self.name
+
+class NewsPaper(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField('News Paper', max_length=128, null=False, blank=False)
+    name_slug = models.SlugField(max_length=255, blank=True)
+    is_active = models.BooleanFiled(default=True)
+
+    class Meta:
+        db_table = 'newspaper'
+        verbose_name = 'NewsPaper'
+        verbose_name_plural = 'NewsPapers'
+
+    def __unicode__(self):
+        return self.name
+
