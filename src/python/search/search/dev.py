@@ -5,7 +5,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.mysql',
         'NAME': 'billing',
         'USER': 'root',
-        'PASSWORD': 'prince246oo6',
+        'PASSWORD': 'local',
         'HOST': 'localhost',
         'PORT': '3306',
         'CONN_MAX_AGE': 86400,
