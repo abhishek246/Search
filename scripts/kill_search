@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PROCESSID=`ps aux | grep 'Search' | grep -v grep | grep -v "scripts/kill" | awk '{ print $2 }'`
+
+kill -9 $PROCESSID

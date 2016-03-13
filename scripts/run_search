@@ -1,0 +1,25 @@
+#!/bin/bash
+
+PROJECTDIR=/home/web/Search
+DJANGODIR=/home/web/Search/src/python/search
+
+pushd $PROJECTDIR
+source bin/activate
+pushd $DJANGODIR
+
+case "$1" in
+dev)
+    CONFIG=search.dev
+    ;;
+stage)
+    CONFIG=search.stage
+    ;;
+production)
+    CONFIG=search.production
+    ;;
+*)
+    CONFIG=search.dev
+    ;;
+esac
+
+exec python manage.py search --settings=$CONFIG
