@@ -1,4 +1,4 @@
-#from contentapp import XY
+from contentapp import DropPoint, City
 __all__ = [
-    #'PspLoAccountMapping', 'PspPaymentMethodMapping', 'LoBankCodes', 'PaymentTransactionalDetails', 'PaymentServiceProvider', 'PaymentTransactionalPspDetails', 'PspPlatformTypeMapping', 'PspBankCodeMapping',
+    'DropPoint', 'City',
 ]
