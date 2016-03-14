@@ -46,6 +46,7 @@ def handle_db_exceptions(query_func):
 
 @handle_db_exceptions
 def _city_center():
+    ''' All city and center related to that city'''
     try:
         cities = City.objects.all()
         city_list = []
@@ -55,5 +56,13 @@ def _city_center():
                 'city_slug': city.slug_name
             })
         return city_list
+    except Exception, ex:
+        log.exception(ex)
+
+@handle_db_exceptions
+def _agent_details():
+    '''get all agent details'''
+    try:
+        return 'agent details'
     except Exception, ex:
         log.exception(ex)

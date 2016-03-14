@@ -14,7 +14,6 @@ from controllers import *
 ################################################################################
 
 import logger
-#from controllers.common_functions import *
 
 log = logger.getLogger('Search-Cognition')
 
@@ -57,3 +56,9 @@ class SearchRPC(object):
         except Exception,ex:
             log.exception(ex)
 
+    @log_service
+    def agent_details(self):
+        try:
+            return _agent_details()
+        except Exception,ex:
+            log.exception(ex)
