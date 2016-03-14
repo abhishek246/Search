@@ -47,7 +47,7 @@ def handle_db_exceptions(query_func):
 @handle_db_exceptions
 def _city_center():
     try:
-        cities = City.objects.all()\
+        cities = City.objects.all()
         city_list = []
         for city in cities:
             city_list.append({
