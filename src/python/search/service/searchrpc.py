@@ -42,10 +42,18 @@ class SearchRPC(object):
         self.mobilepush_client = mobilepush_client
         self.mailing_client = mailing_client
         self.batwaa_client = batwaa_client
-    
+
     @log_service
     def run_check(self):
         try:
             return 'Search Running @ port 9000'
         except Exception, ex:
-            log.exception(ex) 
+            log.exception(ex)
+
+    @log_service
+    def city_center(self):
+        try:
+            return _city_center()
+        except Exception,ex:
+            log.exception(ex)
+
