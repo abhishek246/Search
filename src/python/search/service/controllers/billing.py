@@ -5,6 +5,8 @@
 '''
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from service.models import City, DropPoint
+
 ################################################################################
 #
 ################################################################################
@@ -38,10 +40,20 @@ def handle_db_exceptions(query_func):
             return query_func(*args, **kwargs)
     return inner
 
+######################################################
+#
+#######################################################
 
 @handle_db_exceptions
 def _city_center():
     try:
-        return 'Center'
+        cities = City.objects.all()\
+        city_list = []
+        for city in cities:
+            city_list.append({
+                'city_name': city.name,
+                'city_slug': city.slug_name
+            })
+        return city_list
     except Exception, ex:
         log.exception(ex)
