@@ -5,7 +5,7 @@
 '''
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from service.models import City, DropPoint
+from service.models import City, DropPoint, Agent
 
 ################################################################################
 #
@@ -66,3 +66,50 @@ def _agent_details():
         return 'agent details'
     except Exception, ex:
         log.exception(ex)
+
+@handle_db_exceptions
+def _add_agent(kwargs):
+    _query = {
+        'name': kwargs.get('name'),
+        'area': kwargs.get('area')
+    }
+    agent = {'status':'Successfully Created'}
+    try:
+        _agent = Agent.objects.get(**_query)
+        agent = {'status':'User Already exists'}
+    except Agent.DoesNotExist as ex:
+        _agent = Agent.objects.create(**query)
+    return agent
+
+@handle_db_exceptions
+def _add_indent(kwargs):
+    _agent_query = {
+        'agent': kwargs.get('agent'),
+        'is_active': True
+    }
+    _paper_query = {
+        'name_slug': kwargs.get('paper'),
+        'is_active': True
+    }
+    try:
+        _agent = Agent.objects.get(**_agent_query)
+        _paper = NewsPaper.objects.get(**_paper_query)
+    except (Agent.DoesNotExist, NewsPaper.DoesNotExist) as ex:
+        log.exception('--> %s agent or newpaper does not exists', __name__)
+
+    #with transaction.atmoic():
+    _indent = kwargs('indent')
+    for data in _indent:
+        try:
+            _query = {
+                'agent': _agent,
+                'newspaper': _paper,
+                'date': data.get('date')
+            }
+            indent = Indent.objects.get(**_query)
+        except Indent.DoesNotExist as ex:
+            indent = Indent(agent=_agent, newspaper=_paper, date=data.get('date'), indent=int(data.get('quantity')))
+        else:
+            setattr(indent, 'indent', int(data.get('quantity')))
+        indent.save()
+    return {'status': 'Successfully Updated Indent'}

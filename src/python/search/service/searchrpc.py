@@ -62,3 +62,7 @@ class SearchRPC(object):
             return _agent_details()
         except Exception,ex:
             log.exception(ex)
+
+    @log_service
+    def add_agent(self):
+        return _add_agent()

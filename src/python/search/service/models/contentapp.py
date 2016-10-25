@@ -46,12 +46,14 @@ class Agent(models.Model): # pylint: disable=C1001
     name = models.CharField('Agent Name', max_length=128, \
            null=False, blank=False)
     area = models.ForeignKey(DropPoint, verbose_name='DropPoint')
+    is_active = models.BooleanField(default=True)
 
     class Meta: # pylint: disable=C1001
         ''' Table Name '''
         db_table = 'agent'
         verbose_name = 'Agent'
         verbose_name_plural = 'Agents'
+        unique_together = ['name', 'area']
 
     def __unicode__(self):
         return self.name
