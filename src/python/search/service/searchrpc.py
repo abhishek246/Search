@@ -58,6 +58,7 @@ class SearchRPC(object):
 
     @log_service
     def agent_details(self):
+        ''' Public Function  '''
         try:
             return _agent_details()
         except Exception,ex:

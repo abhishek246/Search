@@ -6,6 +6,8 @@
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from service.models import City, DropPoint, Agent
+from service.models import City, DropPoint
+from django.db import InterfaceError, OperationalError, close_connection
 
 ################################################################################
 #
@@ -26,15 +28,18 @@ def handle_db_exceptions(query_func):
         try:
             return query_func(*args, **kwargs)
         except ObjectDoesNotExist, ex:
-            log.info('ObjectDoesNotExist Exception occured in %s.' % query_func.__name__)
+            log.info('ObjectDoesNotExist Exception occured in %s.'
+                % query_func.__name__)
             log.exception(ex)
         except InterfaceError, ex:
-            log.info('InterfaceError Exception occured in %s.' % query_func.__name__)
+            log.info('InterfaceError Exception occured in %s.'
+                % query_func.__name__)
             log.exception(ex)
             close_connection()
             return query_func(*args, **kwargs)
         except OperationalError, ex:
-            log.info('OperationalError Exception occured in %s.' % query_func.__name__)
+            log.info('OperationalError Exception occured in %s.'
+                % query_func.__name__)
             log.exception(ex)
             close_connection()
             return query_func(*args, **kwargs)
@@ -48,14 +53,33 @@ def handle_db_exceptions(query_func):
 def _city_center():
     ''' All city and center related to that city'''
     try:
-        cities = City.objects.all()
+
+        try:
+            cities = City.objects.filter(is_active=True)
+        except Exception, ex:
+            log.exception(ex)
+
         city_list = []
         for city in cities:
+            centers = DropPoint.objects.filter()
+            center_list = []
+            for center in centers:
+                center_list.append({
+                    'center_name': center.name,
+                    'center_slug': center.slug_name
+                })
             city_list.append({
                 'city_name': city.name,
-                'city_slug': city.slug_name
+                'city_slug': city.slug_name,
+                'center_list': center_list
             })
-        return city_list
+
+        if len(city_list) > 0:
+            return city_list
+
+        return {'message': 'Revlavent City data does not exists',
+                'error': 'Data Error'
+            }
     except Exception, ex:
         log.exception(ex)
 
@@ -63,7 +87,7 @@ def _city_center():
 def _agent_details():
     '''get all agent details'''
     try:
-        return 'agent details'
+        return 'this is agent details abc'
     except Exception, ex:
         log.exception(ex)
 
@@ -111,5 +135,5 @@ def _add_indent(kwargs):
             indent = Indent(agent=_agent, newspaper=_paper, date=data.get('date'), indent=int(data.get('quantity')))
         else:
             setattr(indent, 'indent', int(data.get('quantity')))
-        indent.save()
+            indent.save()
     return {'status': 'Successfully Updated Indent'}
