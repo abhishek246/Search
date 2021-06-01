@@ -10,7 +10,7 @@ python-dateutil==2.4.2
 python-prctl==1.6.1
 pyzmq==14.7.0
 six==1.9.0
-urllib3==1.10.4
+urllib3==1.26.5
 wheel==0.24.0
 zerorpc==0.5.1
 argparse==1.2.1
